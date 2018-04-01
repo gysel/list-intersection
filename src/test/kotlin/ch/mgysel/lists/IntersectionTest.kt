@@ -1,38 +1,34 @@
 package ch.mgysel.lists
 
-import ch.mgysel.lists.Intersection.Implementation.*
-import io.kotlintest.matchers.shouldBe
-import io.kotlintest.matchers.singleElement
-import org.junit.Test
+import io.kotlintest.matchers.*
+import io.kotlintest.specs.StringSpec
 
-class IntersectionTest {
+class IntersectionTest : StringSpec() {
 
-    private val implementations = Intersection<Int>()
-    private val firstList = listOf(2, 3, 1)
-    private val secondList = listOf(4, 3, 5)
+    private val intersection = Intersection<Int>()
 
-    @Test
-    fun `Kotlin Stdlib implementation`() {
-        val implementation = implementations.getImplementation(KOTLIN_STDLIB)
+    init {
 
-        val intersection = implementation(firstList, secondList)
-        intersection shouldBe singleElement(3)
-    }
+        val implementations = Intersection.Implementation.values()
 
-    @Test
-    fun `Iteration implementation`() {
-        val implementation = implementations.getImplementation(ITERATION)
+        val firstList = listOf(2, 3, 1)
+        val secondList = listOf(4, 3, 5)
+        implementations.forEach { implementation ->
+            val function = intersection.getImplementation(implementation)
 
-        val intersection = implementation(firstList, secondList)
-        intersection shouldBe singleElement(3)
-    }
+            "$implementation - simple intersection" {
+                val result = function(firstList, secondList)
+                result shouldBe singleElement(3)
+            }
 
-    @Test
-    fun `Sequence implementation`() {
-        val implementation = implementations.getImplementation(SEQUENCE)
+            "$implementation - duplicates are shown once in result" {
+                val result = function(listOf(1, 2, 2, 3), listOf(2, 2, 3, 3))
+                result should haveSize(2)
+                result should containsAll(2, 3)
+            }
 
-        val intersection = implementation(firstList, secondList)
-        intersection shouldBe singleElement(3)
+        }
+
     }
 
 }
