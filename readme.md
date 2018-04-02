@@ -1,4 +1,4 @@
-A little educational program to test different list intersection implementations.
+A little educational program to compare different list intersection implementations.
 
 ![App Screenshot](https://raw.githubusercontent.com/gysel/list-intersection/master/IntersectionSimulator.png)
 
