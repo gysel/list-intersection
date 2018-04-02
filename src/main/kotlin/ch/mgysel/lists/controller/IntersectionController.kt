@@ -6,7 +6,7 @@ import ch.mgysel.lists.view.IntersectionParametersValueObject
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.chart.XYChart
-import tornadofx.Controller
+import tornadofx.*
 import kotlin.system.measureTimeMillis
 
 class IntersectionController : Controller() {
@@ -17,7 +17,7 @@ class IntersectionController : Controller() {
     fun runIntersection(dto: IntersectionParametersValueObject) {
 
         runAsync {
-            println("Running with params $dto...")
+            log.info("Running with params $dto...")
             updateMessage("Preparing lists with random numbers...")
             updateProgress(0, dto.rounds.toLong())
 
@@ -34,16 +34,17 @@ class IntersectionController : Controller() {
 
                 val millis = measureTimeMillis {
                     val result = function(listA, listB)
-                    println("Found ${result.size} records")
+                    log.info("Found ${result.size} records")
                 }
                 updateProgress(it.toLong(), dto.rounds.toLong())
 
-                println("Calculated intersection using ${dto.implementation} in ${millis}ms")
+                log.info("Calculated intersection using ${dto.implementation} in ${millis}ms")
                 XYChart.Data<Number, Number>(it - 1, millis.toInt())
             }
             updateMessage("Done!")
             data
         } ui { data ->
+            log.info("Updating UI with ${data.size} records")
             intersectionRuns.setAll(data)
         }
 
