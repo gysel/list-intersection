@@ -2,6 +2,7 @@ package ch.mgysel.lists.view
 
 import ch.mgysel.lists.Intersection
 import ch.mgysel.lists.controller.IntersectionController
+import ch.mgysel.lists.css.Styles
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.scene.chart.NumberAxis
@@ -44,10 +45,15 @@ class IntersectionView : View("Intersection Simulator") {
                     action {
                         controller.runIntersection(parameters.toDto())
                     }
+                    enableWhen(status.running.not())
                 }
                 progressbar(status.progress)
-                label(status.message)
+                label(status.message) {
+                    addClass(Styles.statusClass)
+                }
             }
+
+            separator()
 
             linechart<Number, Number>("Intersection Test", createNumberAxis("Round"), createNumberAxis("ms")) {
                 val elements: ObservableList<XYChart.Data<Number, Number>> = controller.intersectionRuns
