@@ -10,7 +10,7 @@ A little educational program to test different list intersection implementations
 * [Kotlintest](https://github.com/kotlintest/kotlintest)
 * [Log4J 2](https://logging.apache.org/log4j/2.x/)
 
-The exact library versions are all listed in `gradle.properties`.
+The exact library versions are all listed in `build.gradle`.
 
 # Build
 
