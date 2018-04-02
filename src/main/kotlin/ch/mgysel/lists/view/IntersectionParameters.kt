@@ -17,9 +17,3 @@ class IntersectionParameters(sizeA: Int = 100_000, sizeB: Int = 100_000, rounds:
 
 }
 
-/**
- * A [Value Object](https://martinfowler.com/bliki/ValueObject.html) according to Martin Fowler.
- */
-data class IntersectionParametersValueObject(val sizeA: Int,
-                                             val sizeB: Int,
-                                             val repetitions: Int)

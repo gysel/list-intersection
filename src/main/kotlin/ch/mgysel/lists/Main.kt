@@ -1,3 +1,5 @@
+package ch.mgysel.lists
+
 import javafx.application.Application
 
 fun main(args: Array<String>) {

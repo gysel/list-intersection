@@ -1,4 +1,32 @@
+A little educational program to test different list intersection implementations.
+
+# Stack
+
+* [Kotlin](https://kotlinlang.org/)
+* [Gradle](https://gradle.org/)
+* [TornadoFX](https://github.com/edvin/tornadofx)
+* [Kotlintest](https://github.com/kotlintest/kotlintest)
+* [Log4J 2](https://logging.apache.org/log4j/2.x/)
+
+The exact library versions are all listed in `gradle.properties`.
 
 # Build
 
     ./gradlew clean build
+
+Currently no executable jar is created. I recommend to run the main function from Gradle or an IDE.
+
+    ./gradlew run
+
+# Run Tests
+
+    ./gradlew clean test
+
+A JUnit test report is created: `build/reports/tests/test/index.html`.
+
+# License
+
+**"THE BEER-WARE LICENSE" (Revision 42)**
+
+<mail@mgysel.ch> wrote this project. As long as you retain this notice you can do whatever you want with this stuff.
+If we meet some day, and you think this stuff is worth it, you can buy me a beer in return - *Michael Gysel*.
