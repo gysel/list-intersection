@@ -1,10 +1,8 @@
 package ch.mgysel.lists.view
 
-import ch.mgysel.lists.Intersection
-import tornadofx.getProperty
-import tornadofx.property
+import tornadofx.*
 
-class IntersectionParameters(sizeA: Int = 100_000, sizeB: Int = 100_000, rounds: Int = 10, implementation: Intersection.Implementation = Intersection.Implementation.KOTLIN_STDLIB) {
+class IntersectionParameters(sizeA: Int = 100_000, sizeB: Int = 100_000, rounds: Int = 10) {
 
     var sizeA: Int by property(sizeA)
     fun sizeAProperty() = getProperty(IntersectionParameters::sizeA)
@@ -12,13 +10,10 @@ class IntersectionParameters(sizeA: Int = 100_000, sizeB: Int = 100_000, rounds:
     var sizeB: Int by property(sizeB)
     fun sizeBProperty() = getProperty(IntersectionParameters::sizeB)
 
-    var rounds: Int by property(rounds)
-    fun roundsProperty() = getProperty(IntersectionParameters::rounds)
+    var repetitions: Int by property(rounds)
+    fun repetitionsProperty() = getProperty(IntersectionParameters::repetitions)
 
-    var implementation: Intersection.Implementation by property(implementation)
-    fun implementationProperty() = getProperty(IntersectionParameters::implementation)
-
-    fun toDto() = IntersectionParametersValueObject(sizeA, sizeB, rounds, implementation)
+    fun toDto() = IntersectionParametersValueObject(sizeA, sizeB, repetitions)
 
 }
 
@@ -27,5 +22,4 @@ class IntersectionParameters(sizeA: Int = 100_000, sizeB: Int = 100_000, rounds:
  */
 data class IntersectionParametersValueObject(val sizeA: Int,
                                              val sizeB: Int,
-                                             val rounds: Int,
-                                             val implementation: Intersection.Implementation)
+                                             val repetitions: Int)

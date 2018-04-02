@@ -1,6 +1,5 @@
 package ch.mgysel.lists.view
 
-import ch.mgysel.lists.Intersection
 import ch.mgysel.lists.controller.IntersectionController
 import ch.mgysel.lists.css.Styles
 import javafx.collections.FXCollections
@@ -13,7 +12,6 @@ class IntersectionView : View("Intersection Simulator") {
 
     private val sizes = FXCollections.observableArrayList<Int>((4..7).map { Math.pow(10.toDouble(), it.toDouble()).toInt() })
     private val rounds = FXCollections.observableArrayList(1, 5, 10, 20, 50)
-    private val implementations = FXCollections.observableArrayList(*Intersection.Implementation.values())
     private val parameters = IntersectionParameters()
 
     private val status: TaskStatus by inject()
@@ -29,14 +27,8 @@ class IntersectionView : View("Intersection Simulator") {
                 field("Size of list B") {
                     combobox(property = parameters.sizeBProperty(), values = sizes)
                 }
-            }
-
-            fieldset("Algorithm") {
-                field("Implementation") {
-                    combobox(property = parameters.implementationProperty(), values = implementations)
-                }
-                field("Rounds") {
-                    combobox(property = parameters.roundsProperty(), values = rounds)
+                field("Repetitions") {
+                    combobox(property = parameters.repetitionsProperty(), values = rounds)
                 }
             }
 
@@ -55,9 +47,11 @@ class IntersectionView : View("Intersection Simulator") {
 
             separator()
 
-            linechart<Number, Number>("Intersection Test", createNumberAxis("Round"), createNumberAxis("ms")) {
-                val elements: ObservableList<XYChart.Data<Number, Number>> = controller.intersectionRuns
-                series(name = "Implementation Performance", elements = elements)
+            linechart<Number, Number>("Intersection Performance", createNumberAxis("Repetition"), createNumberAxis("ms")) {
+                controller.implementations().forEach {
+                    val elements: ObservableList<XYChart.Data<Number, Number>> = controller.getDataList(it)
+                    series(name = "$it", elements = elements)
+                }
             }
 
         }
