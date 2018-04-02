@@ -4,6 +4,7 @@ import ch.mgysel.lists.controller.IntersectionController
 import ch.mgysel.lists.css.Styles
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import tornadofx.*
@@ -20,18 +21,31 @@ class IntersectionView : View("Intersection Simulator") {
     override val root = vbox {
 
         form {
-            fieldset("Params") {
-                field("Size of list A") {
-                    combobox(property = parameters.sizeAProperty(), values = sizes)
+            hbox(20) {
+                fieldset("Params") {
+                    field("Size of list A") {
+                        combobox(property = parameters.sizeAProperty(), values = sizes)
+                    }
+                    field("Size of list B") {
+                        combobox(property = parameters.sizeBProperty(), values = sizes)
+                    }
+                    field("Repetitions") {
+                        combobox(property = parameters.repetitionsProperty(), values = rounds)
+                    }
                 }
-                field("Size of list B") {
-                    combobox(property = parameters.sizeBProperty(), values = sizes)
+                fieldset("Algorithms", labelPosition = VERTICAL) {
+                    field("KOTLIN_STDLIB") {
+                        label("The Iterable.intersect in the Kotlin standard library.")
+                    }
+                    field("ITERATION") {
+                        label("Creates a HashSet from A and iterates over B searching for entries present in the HashSet.")
+                    }
+                    field("SEQUENCE") {
+                        label("Same as ITERATION but uses a Kotlin Sequence instead of a normal iteration.")
+                    }
                 }
-                field("Repetitions") {
-                    combobox(property = parameters.repetitionsProperty(), values = rounds)
-                }
-            }
 
+            }
             hbox {
                 button("Run") {
                     action {
@@ -44,16 +58,15 @@ class IntersectionView : View("Intersection Simulator") {
                     addClass(Styles.statusClass)
                 }
             }
+        }
 
-            separator()
+        separator()
 
-            linechart<Number, Number>("Intersection Performance", createNumberAxis("Repetition"), createNumberAxis("ms")) {
-                controller.implementations().forEach {
-                    val elements: ObservableList<XYChart.Data<Number, Number>> = controller.getDataList(it)
-                    series(name = "$it", elements = elements)
-                }
+        linechart<Number, Number>("Intersection Performance", createNumberAxis("Repetition"), createNumberAxis("ms")) {
+            controller.implementations().forEach {
+                val elements: ObservableList<XYChart.Data<Number, Number>> = controller.getDataList(it)
+                series(name = "$it", elements = elements)
             }
-
         }
 
     }
