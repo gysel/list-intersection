@@ -1,5 +1,7 @@
 A little educational program to test different list intersection implementations.
 
+![App Screenshot](https://raw.githubusercontent.com/gysel/list-intersection/master/IntersectionSimulator.png)
+
 # Stack
 
 * [Kotlin](https://kotlinlang.org/)
