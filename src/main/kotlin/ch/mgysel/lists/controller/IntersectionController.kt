@@ -15,7 +15,7 @@ class IntersectionController : Controller() {
 
     private val intersection = Intersection<Int>()
     private val intersectionRuns = implementations()
-            .map { Pair(it, FXCollections.observableArrayList<ChartDataRecord>()) }.toMap()
+            .map { it to FXCollections.observableArrayList<ChartDataRecord>() }.toMap()
 
 
     fun runIntersection(dto: IntersectionParametersValueObject) {
