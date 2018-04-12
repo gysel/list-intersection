@@ -2,7 +2,7 @@ package ch.mgysel.lists.controller
 
 import ch.mgysel.lists.Intersection
 import ch.mgysel.lists.util.createRandomNumbers
-import ch.mgysel.lists.view.IntersectionParametersValueObject
+import ch.mgysel.lists.valueobject.IntersectionParameters
 import javafx.collections.FXCollections
 import javafx.scene.chart.XYChart
 import tornadofx.*
@@ -18,7 +18,7 @@ class IntersectionController : Controller() {
             .map { it to FXCollections.observableArrayList<ChartDataRecord>() }.toMap()
 
 
-    fun runIntersection(dto: IntersectionParametersValueObject) {
+    fun runIntersection(dto: IntersectionParameters) {
 
         runAsync {
             log.info("Running with params $dto...")

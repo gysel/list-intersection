@@ -2,7 +2,9 @@ package ch.mgysel.lists.view
 
 import ch.mgysel.lists.controller.IntersectionController
 import ch.mgysel.lists.css.Styles
-import javafx.collections.FXCollections
+import ch.mgysel.lists.valueobject.IntersectionParameters
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.ObservableList
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.chart.NumberAxis
@@ -11,12 +13,21 @@ import tornadofx.*
 
 class IntersectionView : View("Intersection Simulator") {
 
-    private val sizes = FXCollections.observableArrayList<Int>((4..7).map { Math.pow(10.toDouble(), it.toDouble()).toInt() })
-    private val rounds = FXCollections.observableArrayList(1, 5, 10, 20, 50)
-    private val parameters = IntersectionParameters()
+    private val sizes = observableArrayList((4..7).map { Math.pow(10.toDouble(), it.toDouble()).toInt() })
+    private val rounds = observableArrayList(1, 5, 10, 20, 50)
+
+    private val model = object : ViewModel() {
+        val sizeA = bind { SimpleIntegerProperty(100_000) }
+        val sizeB = bind { SimpleIntegerProperty(100_000) }
+        val repetitions = bind { SimpleIntegerProperty(10) }
+        fun toDto() = IntersectionParameters(
+                sizeA.value.toInt(),
+                sizeB.value.toInt(),
+                repetitions.value.toInt())
+    }
 
     private val status: TaskStatus by inject()
-    private val controller by inject<IntersectionController>()
+    private val controller: IntersectionController by inject()
 
     override val root = vbox {
 
@@ -24,13 +35,13 @@ class IntersectionView : View("Intersection Simulator") {
             hbox(20) {
                 fieldset("Params") {
                     field("Size of list A") {
-                        combobox(property = parameters.sizeAProperty(), values = sizes)
+                        combobox(property = model.sizeA, values = sizes)
                     }
                     field("Size of list B") {
-                        combobox(property = parameters.sizeBProperty(), values = sizes)
+                        combobox(property = model.sizeB, values = sizes)
                     }
                     field("Repetitions") {
-                        combobox(property = parameters.repetitionsProperty(), values = rounds)
+                        combobox(property = model.repetitions, values = rounds)
                     }
                 }
                 fieldset("Algorithms", labelPosition = VERTICAL) {
@@ -49,7 +60,7 @@ class IntersectionView : View("Intersection Simulator") {
             hbox {
                 button("Run") {
                     action {
-                        controller.runIntersection(parameters.toDto())
+                        controller.runIntersection(model.toDto())
                     }
                     enableWhen(status.running.not())
                 }
