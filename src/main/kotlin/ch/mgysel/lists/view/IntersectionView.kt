@@ -74,7 +74,7 @@ class IntersectionView : View("Intersection Simulator") {
         separator()
 
         linechart<Number, Number>("Intersection Performance", createNumberAxis("Repetition"), createNumberAxis("ms")) {
-            controller.implementations().forEach {
+            controller.intersections().forEach {
                 val elements: ObservableList<XYChart.Data<Number, Number>> = controller.getDataList(it)
                 series(name = "$it", elements = elements)
             }

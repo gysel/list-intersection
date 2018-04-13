@@ -13,8 +13,7 @@ typealias ChartDataRecord = XYChart.Data<Number, Number>
 
 class IntersectionController : Controller() {
 
-    private val intersection = Intersection<Int>()
-    private val intersectionRuns = implementations()
+    private val intersectionRuns = intersections()
             .map { it to FXCollections.observableArrayList<ChartDataRecord>() }.toMap()
 
 
@@ -23,7 +22,7 @@ class IntersectionController : Controller() {
         runAsync {
             log.info("Running with params $dto...")
             updateMessage("Preparing lists with random numbers...")
-            val taskCount = implementations().size.toLong() * dto.repetitions + 2
+            val taskCount = intersections().size.toLong() * dto.repetitions + 2
             val taskCounter = AtomicLong(0)
             val tick = { updateProgress(taskCounter.getAndIncrement(), taskCount) }
             tick()
@@ -33,24 +32,23 @@ class IntersectionController : Controller() {
             val listB = createList(dto.sizeB)
             tick()
 
-            val data: Map<Intersection.Implementation, List<ChartDataRecord>> = implementations().map { implementation ->
-                updateMessage("Calculating intersections of $implementation...")
+            val data: Map<Intersection, List<ChartDataRecord>> = intersections().map { intersection ->
+                updateMessage("Calculating intersections of $intersection...")
                 val dataOfImplementation = (1..dto.repetitions).map {
 
-                    val function = intersection.getImplementation(implementation)
-                    // run GC to reduce probability that GC runs while we measure the time
+                    // Ask the VM to do GC to reduce probability that GC runs while we measure the time
                     System.gc()
 
                     val millis = measureTimeMillis {
-                        val result = function(listA, listB)
+                        val result = intersection.apply(listA, listB)
                         log.info("Found ${result.size} records")
                     }
                     tick()
 
-                    log.info("Calculated intersection using $implementation in ${millis}ms")
+                    log.info("Calculated intersection using $intersection in ${millis}ms")
                     XYChart.Data<Number, Number>(it - 1, millis.toInt())
                 }
-                Pair(implementation, dataOfImplementation)
+                Pair(intersection, dataOfImplementation)
             }.toMap()
             updateMessage("Done!")
             data
@@ -63,8 +61,8 @@ class IntersectionController : Controller() {
 
     }
 
-    fun implementations() = Intersection.Implementation.values()
-    fun getDataList(implementation: Intersection.Implementation) = intersectionRuns[implementation]!!
+    fun intersections() = Intersection.values()
+    fun getDataList(implementation: Intersection) = intersectionRuns[implementation]!!
 
     private fun createList(size: Int) = createRandomNumbers(size, calculateMax(size))
 
