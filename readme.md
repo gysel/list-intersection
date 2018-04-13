@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gysel/list-intersection.svg?branch=master)](https://travis-ci.org/gysel/list-intersection)
+
 A little educational program to compare different list intersection implementations.
 
 ![App Screenshot](https://raw.githubusercontent.com/gysel/list-intersection/master/IntersectionSimulator.png)
