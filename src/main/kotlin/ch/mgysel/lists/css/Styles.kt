@@ -13,9 +13,13 @@ class Styles : Stylesheet() {
         separator {
             padding = box(10.px, 0.px)
         }
+        root {
+            padding = box(20.px)
+        }
     }
 
     companion object {
         val statusClass by cssclass()
+        val root by cssclass()
     }
 }

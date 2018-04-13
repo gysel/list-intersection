@@ -30,6 +30,7 @@ class IntersectionView : View("Intersection Simulator") {
     private val controller: IntersectionController by inject()
 
     override val root = vbox {
+        addClass(Styles.root)
 
         form {
             hbox(20) {
