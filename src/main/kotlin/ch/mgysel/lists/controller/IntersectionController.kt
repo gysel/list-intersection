@@ -24,7 +24,9 @@ class IntersectionController : Controller() {
             updateMessage("Preparing lists with random numbers...")
             val taskCount = intersections().size.toLong() * dto.repetitions + 2
             val taskCounter = AtomicLong(0)
-            val tick = { updateProgress(taskCounter.getAndIncrement(), taskCount) }
+            fun tick() {
+                updateProgress(taskCounter.getAndIncrement(), taskCount)
+            }
             tick()
 
             val listA = createList(dto.sizeA)
