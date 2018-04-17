@@ -1,4 +1,4 @@
-package ch.mgysel.lists
+package ch.mgysel.lists.domain
 
 enum class Intersection {
     KOTLIN_STDLIB {

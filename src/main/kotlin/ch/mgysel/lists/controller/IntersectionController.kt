@@ -1,6 +1,6 @@
 package ch.mgysel.lists.controller
 
-import ch.mgysel.lists.Intersection
+import ch.mgysel.lists.domain.Intersection
 import ch.mgysel.lists.util.createRandomNumbers
 import ch.mgysel.lists.valueobject.IntersectionParameters
 import javafx.collections.FXCollections

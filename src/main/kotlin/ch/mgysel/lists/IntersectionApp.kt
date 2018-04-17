@@ -15,4 +15,3 @@ fun main(args: Array<String>) {
     Application.launch(IntersectionApp::class.java, *args)
 
 }
-

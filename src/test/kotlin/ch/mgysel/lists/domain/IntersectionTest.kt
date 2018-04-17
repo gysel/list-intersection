@@ -1,4 +1,4 @@
-package ch.mgysel.lists
+package ch.mgysel.lists.domain
 
 import io.kotlintest.matchers.*
 import io.kotlintest.specs.StringSpec
