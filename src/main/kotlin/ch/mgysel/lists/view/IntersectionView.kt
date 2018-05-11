@@ -2,14 +2,17 @@ package ch.mgysel.lists.view
 
 import ch.mgysel.lists.controller.IntersectionController
 import ch.mgysel.lists.css.Styles
+import ch.mgysel.lists.domain.Intersection
 import ch.mgysel.lists.valueobject.IntersectionParameters
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.collections.FXCollections
 import javafx.collections.FXCollections.observableArrayList
-import javafx.collections.ObservableList
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.chart.NumberAxis
 import javafx.scene.chart.XYChart
 import tornadofx.*
+
+typealias ChartDataRecord = XYChart.Data<Number, Number>
 
 class IntersectionView : View("Intersection Simulator") {
 
@@ -28,6 +31,9 @@ class IntersectionView : View("Intersection Simulator") {
 
     private val status: TaskStatus by inject()
     private val controller: IntersectionController by inject()
+    private val dataLists = controller.intersections()
+            .map { it to FXCollections.observableArrayList<ChartDataRecord>() }
+            .toMap()
 
     override val root = vbox {
         addClass(Styles.root)
@@ -61,7 +67,15 @@ class IntersectionView : View("Intersection Simulator") {
             hbox {
                 button("Run") {
                     action {
+                        dataLists.values.forEach { it.clear() }
                         controller.runIntersection(model.toDto())
+                                .subscribe { update ->
+                                    runLater {
+                                        log.info("Got $update")
+                                        val record = update.record
+                                        dataList(update.intersection).add(ChartDataRecord(record.index, record.milliseconds))
+                                    }
+                                }
                     }
                     enableWhen(status.running.not())
                 }
@@ -76,12 +90,13 @@ class IntersectionView : View("Intersection Simulator") {
 
         linechart<Number, Number>("Intersection Performance", createNumberAxis("Repetition"), createNumberAxis("ms")) {
             controller.intersections().forEach {
-                val elements: ObservableList<XYChart.Data<Number, Number>> = controller.getDataList(it)
-                series(name = "$it", elements = elements)
+                series(name = "$it", elements = dataList(it))
             }
         }
 
     }
+
+    private fun dataList(it: Intersection) = dataLists[it]!!
 
     private fun createNumberAxis(name: String): NumberAxis {
         return NumberAxis().apply {
