@@ -33,7 +33,6 @@ A JUnit test report is created: `build/reports/tests/test/index.html`.
 Possible enhancements:
 
 * [TestFX](https://github.com/TestFX/TestFX) UI Tests
-* Live updates of result during a run, possibly using [RxKotlinFx](https://github.com/thomasnield/RxKotlinFX)
 * Create a package using [javafx-gradle-plugin](https://github.com/FibreFoX/javafx-gradle-plugin)
 
 # License

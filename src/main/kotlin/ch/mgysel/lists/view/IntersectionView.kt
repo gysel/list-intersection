@@ -4,6 +4,7 @@ import ch.mgysel.lists.controller.IntersectionController
 import ch.mgysel.lists.css.Styles
 import ch.mgysel.lists.domain.Intersection
 import ch.mgysel.lists.valueobject.IntersectionParameters
+import io.reactivex.rxkotlin.subscribeBy
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.collections.FXCollections
 import javafx.collections.FXCollections.observableArrayList
@@ -69,13 +70,13 @@ class IntersectionView : View("Intersection Simulator") {
                     action {
                         dataLists.values.forEach { it.clear() }
                         controller.runIntersection(model.toDto())
-                                .subscribe { update ->
+                                .subscribeBy(onNext = { update ->
                                     runLater {
                                         log.info("Got $update")
                                         val record = update.record
                                         dataList(update.intersection).add(ChartDataRecord(record.index, record.milliseconds))
                                     }
-                                }
+                                })
                     }
                     enableWhen(status.running.not())
                 }
